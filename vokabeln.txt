@@ -1,0 +1,8 @@
+money;geld
+to study;studieren
+house;haus
+blue;blau
+dog;hund
+yellow;gelb
+tree;baum
+red;rot

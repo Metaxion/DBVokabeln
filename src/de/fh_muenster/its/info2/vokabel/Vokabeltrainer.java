@@ -56,7 +56,7 @@ public class Vokabeltrainer {
 					System.err.println("Datei oder Reader konnte beim Einlesen nicht richtig geoeffnet werden");
 				}
 				break;
-			case "speichern"://TODO nur für Vokabelliste
+			case "speichern":
 				if (manager instanceof VerketteteListeManager) {
 					try {
 						vokabelDateiSpeichern(dateiName);
@@ -111,33 +111,38 @@ public class Vokabeltrainer {
 		Vokabel vok = manager.getRandomVokabel();
 		Random rand = new Random();
 		int uebersetzungsRichtung = rand.nextInt(1);
-		
-		// Abfrage
-		if (uebersetzungsRichtung == 0) {
-			// Englisch zu Deutsch
-			System.out.println("Geben sie die deutsche Uebersetzung an: " + vok.getEnglisch());
-			eingabe = vokabelScanner.nextLine();
-			if (eingabe.equals(vok.getDeutsch())) {
-				System.out.println("\nRichtig!");
+
+		// Ueberpruefung
+		if (vok != null) {
+
+			// Abfrage
+			if (uebersetzungsRichtung == 0) {
+				// Englisch zu Deutsch
+				System.out.println("Geben sie die deutsche Uebersetzung an: " + vok.getEnglisch());
+				eingabe = vokabelScanner.nextLine();
+				if (eingabe.equals(vok.getDeutsch())) {
+					System.out.println("\nRichtig!");
+				} else {
+					System.out.println("\nFalsch! " + vok.getDeutsch() + " waere richtig gewesen!");
+				}
 			} else {
-				System.out.println("\nFalsch! " + vok.getDeutsch() + " waere richtig gewesen!");
+				// Deutsch zu Englisch
+				System.out.println("Geben sie die englische Uebersetzung an: " + vok.getDeutsch());
+				eingabe = vokabelScanner.nextLine();
+				if (eingabe.equals(vok.getEnglisch())) {
+					System.out.println("\nRichtig!");
+				} else {
+					System.out.println("\nFalsch! " + vok.getEnglisch() + " waere richtig gewesen!");
+				}
 			}
 		} else {
-			// Deutsch zu Englisch
-			System.out.println("Geben sie die englische Uebersetzung an: " + vok.getDeutsch());
-			eingabe = vokabelScanner.nextLine();
-			if (eingabe.equals(vok.getEnglisch())) {
-				System.out.println("\nRichtig!");
-			} else {
-				System.out.println("\nFalsch! " + vok.getEnglisch() + " waere richtig gewesen!");
-			}
+			System.out.println("Es gibt keine Vokabeln zum abfragen!");
 		}
 	}
 
 	/**
-	 * Laesst den Nutzer eine Vokabel auf deutsch oder englisch angeben und falls
-	 * sie vorhanden ist wird sie geloescht. TODO: ueberpruefen aufgrund der
-	 * Klammerverschiebung
+	 * Laesst den Nutzer eine Vokabel auf deutsch angeben und falls
+	 * sie vorhanden ist wird sie geloescht. 
 	 */
 	@SuppressWarnings("resource")
 	protected void vokabelLoeschen() {
@@ -145,7 +150,12 @@ public class Vokabeltrainer {
 		System.out.println("\nGeben sie die zu loeschende Variabel in deutsch an:");
 		String eingabe = vokabelScanner.nextLine();
 		eingabe = eingabe.trim();
-		manager.delete(eingabe);
+		boolean ergebnis = manager.delete(eingabe);
+		if (ergebnis) {
+			System.out.println("Die Vokabel wurde erfolgreich geloescht!");
+		} else {
+			System.out.println("Die Vokabel konnte nicht geloescht werden!");
+		}
 	}
 
 	/**
@@ -187,20 +197,22 @@ public class Vokabeltrainer {
 	 * @throws IOException
 	 */
 	protected void vokabelDateiSpeichern(String dateiName) throws IOException {
-		if (manager.getAllVokabeln().size() != 0) {
-			int counter = 0;
+		int counter = 0;
+		ArrayList<Vokabel> vokabeln = manager.getAllVokabeln();
+		if (!vokabeln.isEmpty()) {
 			File datei = new File(dateiName);
 			BufferedWriter writer = new BufferedWriter(new FileWriter(datei));
-			ArrayList<Vokabel> vokabeln = manager.getAllVokabeln();
-			for(Vokabel vok : vokabeln) {
+			for (Vokabel vok : vokabeln) {
 				writer.append(vok.getEnglisch() + ";" + vok.getDeutsch());
-				if(counter > 0) {
+				if (counter > 0) {
 					writer.append("\n");
 				}
 				counter++;
 			}
 			writer.close();
 			System.out.println("\n" + counter + " Vokabeln wurden erfolgreich gespeichert!");
+		} else {
+			System.out.println("\nEs gibt keine Vokabeln zum speichern!");
 		}
 	}
 
@@ -208,7 +220,7 @@ public class Vokabeltrainer {
 	 * Gibt alle Vokabeln aus der Liste auf der Konsole aus
 	 */
 	protected void vokabelnAusgeben() {
-		for(Vokabel vok : manager.getAllVokabeln()) {
+		for (Vokabel vok : manager.getAllVokabeln()) {
 			System.out.println(vok.getEnglisch() + ";" + vok.getDeutsch());
 		}
 	}
@@ -227,7 +239,7 @@ public class Vokabeltrainer {
 		String dateiName = scanner.nextLine();
 		File datei = new File(dateiName);
 		if (!datei.exists()) {
-			datei.createNewFile();//TODO: was genau passiert da
+			datei.createNewFile();// TODO: was genau passiert da
 		}
 		BufferedReader reader = new BufferedReader(new FileReader(datei));
 		String zeile = null;
@@ -238,8 +250,10 @@ public class Vokabeltrainer {
 			try {
 				if (validiereZeile(zeile) == true) {
 					String[] vokabeln = zeile.split(";");
-					manager.save(new Vokabel(vokabeln[0].trim(), vokabeln[1].trim()));
-					vokabelAnzahl++;
+					boolean ergebnis = manager.save(new Vokabel(vokabeln[0].trim(), vokabeln[1].trim()));
+					if (ergebnis) {
+						vokabelAnzahl++;
+					}
 				}
 			} catch (KeinSemicolonException e) {
 				System.out.println("Zeile " + zeilenNummer + " enthaelt kein Semicolon");
@@ -253,7 +267,6 @@ public class Vokabeltrainer {
 
 	/**
 	 * Ueberprueft ob eine Zeile zwei Vokabel getrennt von einem Semikolon enthaelt.
-	 * TODO: erweitern?
 	 * 
 	 * @param zeile
 	 * @return true, wenn die Zeile valide ist ; false, wenn die Zeile invalide ist

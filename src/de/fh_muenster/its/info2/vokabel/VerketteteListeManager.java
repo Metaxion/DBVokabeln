@@ -45,24 +45,30 @@ public class VerketteteListeManager implements VokabelManager {
 		Random rand = new Random();
 		int vokabelWahl = rand.nextInt(1000);
 		Vokabel liste = verwaltung.getAnfang();
-		for (int i = 0; i < vokabelWahl; i++) {
-			if (liste.hasNext()) {
-				liste = liste.getNext();
-			} else {
-				liste = verwaltung.getAnfang();
+		if (liste != null) {
+			for (int i = 0; i < vokabelWahl; i++) {
+				if (liste.hasNext()) {
+					liste = liste.getNext();
+				} else {
+					liste = verwaltung.getAnfang();
+				}
 			}
+			return liste;
+		} else {
+			return null;
 		}
-		return liste;
 	}
 
 	@Override
 	public ArrayList<Vokabel> getAllVokabeln() {
 		ArrayList<Vokabel> vokabeln = new ArrayList<>();
 		Vokabel vok = verwaltung.getAnfang();
-		vokabeln.add(vok);
-		while(vok.hasNext()) {
-			vok = vok.getNext();
+		if (vok != null) {
 			vokabeln.add(vok);
+			while (vok.hasNext()) {
+				vok = vok.getNext();
+				vokabeln.add(vok);
+			}
 		}
 		return vokabeln;
 	}

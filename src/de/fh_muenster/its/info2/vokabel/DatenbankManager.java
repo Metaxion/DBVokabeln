@@ -21,12 +21,11 @@ public class DatenbankManager implements VokabelManager {
 	public boolean save(Vokabel v) {
 		try {
 			data.insert(v.getEnglisch(), v.getDeutsch());
+			return true;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
-		return true;
 	}
 
 	@Override
@@ -35,10 +34,9 @@ public class DatenbankManager implements VokabelManager {
 			data.delete(deutsch);
 			return true;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
-		return false;
 	}
 
 	@Override
@@ -63,10 +61,9 @@ public class DatenbankManager implements VokabelManager {
 			}
 			return vokabeln;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 
 }

@@ -1,5 +1,4 @@
-money;geld
-to study;studieren
+money;geldto study;studieren
 house;haus
 blue;blau
 dog;hund

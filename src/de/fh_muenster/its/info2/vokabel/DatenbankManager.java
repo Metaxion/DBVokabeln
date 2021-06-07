@@ -5,10 +5,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Strategie die das VokabelManager Interface implementiert
+ * @author Marcel Krups
+ *
+ */
 public class DatenbankManager implements VokabelManager {
 	
-	DatenbankVerwaltung data;
+	private DatenbankVerwaltung data;
 	
+	/**
+	 * Baut beim initialisieren die Datenbankverbindung mit auf
+	 */
 	public DatenbankManager() {
 		try {
 			data = new DatenbankVerwaltung();
@@ -17,28 +25,50 @@ public class DatenbankManager implements VokabelManager {
 		}	
 	}
 
+	/**
+	 * Speichert eine Vokabel in der Datenbank
+	 * @param v Vokabel die gespeichert werden soll
+	 * @return boolean, ob die Vokabel erfolgreich gespeichert wurde
+	 */
 	@Override
 	public boolean save(Vokabel v) {
 		try {
-			data.insert(v.getEnglisch(), v.getDeutsch());
-			return true;
+			if(data.findVoc(v.getEnglisch(), v.getDeutsch())) {				
+				return false;
+			} else {
+				data.insert(v.getEnglisch(), v.getDeutsch());
+				return true;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
 		}
 	}
 
+	/**
+	 * Loescht eine Vokabel in der Datenbank
+	 * @param deutsch String der den deutschen Teil der zu loeschenden Vokabel enthaelt 
+	 * @return boolean, ob die Vokabel erfolreich geloescht wurde
+	 */
 	@Override
 	public boolean delete(String deutsch) {
 		try {
-			data.delete(deutsch);
-			return true;
+			if(data.findVoc(deutsch)) {
+				data.delete(deutsch);
+				return true;				
+			} else {
+				return false;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
 		}
 	}
 
+	/**
+	 * Gibt eine zufaellige Vokabel zurueck
+	 * @return Vokabel, die zufaellige Vokabel
+	 */
 	@Override
 	public Vokabel getRandomVokabel() {
 		Random rand = new Random();
@@ -50,6 +80,10 @@ public class DatenbankManager implements VokabelManager {
 		return null;
 	}
 
+	/**
+	 * Gibt alle Vokabeln aus der Datenbank zurueck
+	 * @return ArrayList<Vokabel>, die alle Vokabeln enthaelt
+	 */
 	@Override
 	public ArrayList<Vokabel> getAllVokabeln() {
 		ArrayList<Vokabel> vokabeln = new ArrayList<>();

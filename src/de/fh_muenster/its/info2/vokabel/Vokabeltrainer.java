@@ -179,8 +179,11 @@ public class Vokabeltrainer {
 
 		try {
 			if (validiereZeile(eingabeEnglisch + ";" + eingabeDeutsch)) {
-				manager.save(new Vokabel(eingabeEnglisch, eingabeDeutsch));
-				System.out.println("\nVokabel hinzugefuegt");
+				if(manager.save(new Vokabel(eingabeEnglisch, eingabeDeutsch))) {					
+					System.out.println("\nVokabel hinzugefuegt");
+				} else {
+					System.out.println("\nVokabel konnte nicht hinzugefuegt werden");
+				}
 			}
 		} catch (KeinSemicolonException e) {
 			e.printStackTrace();

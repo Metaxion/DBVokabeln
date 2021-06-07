@@ -12,6 +12,7 @@ import java.sql.SQLException;
  *
  */
 public class DatenbankVerwaltung {
+	
 	private Connection connection;
 	
 	/**
@@ -81,12 +82,42 @@ public class DatenbankVerwaltung {
 	}
 	
 	/**
+	 * Searches for a vocabulary
+	 * @param en An English vocabulary.
+	 * @param de The German translation of the English vocabulary. 
+	 * @throws SQLException 
+	 */
+	public boolean findVoc(String en, String de) throws SQLException {
+		String sql = "SELECT * FROM vokabeln WHERE en = (?) AND de = (?)";
+		PreparedStatement statement = this.connection.prepareStatement(sql);
+		statement.setString(1, en);
+		statement.setString(2, de);
+		
+		ResultSet set = statement.executeQuery();
+		return set.next();
+	}
+	
+	/**
+	 * Searches for a vocabulary with the German translation
+	 * @param de The German translation of the English vocabulary. 
+	 * @throws SQLException 
+	 */
+	public boolean findVoc(String de) throws SQLException {
+		String sql = "SELECT * FROM vokabeln WHERE de = (?)";
+		PreparedStatement statement = this.connection.prepareStatement(sql);
+		statement.setString(1, de);
+		
+		ResultSet set = statement.executeQuery();
+		return set.next();
+	}
+	
+	/**
 	 * Delete the vocabulary where the German translation
 	 * equals the given param.
 	 * @param de The German vocabulary
 	 * @throws SQLException
 	 */
-	public void delete(String de) throws SQLException {
+	public void delete (String de) throws SQLException {
 		String sql = "DELETE FROM vokabeln WHERE DE = (?)";
 		PreparedStatement statement = this.connection.prepareStatement(sql);
 		

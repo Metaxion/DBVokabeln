@@ -12,7 +12,7 @@ public class ListenVerwaltung {
 	
 	/**
 	 * Fuellt den Anfang der Liste mit den Vokabeln aus der uebergebenen zeile
-	 * @param zeile
+	 * @param vok, die Vokabel die angehaengt wird
 	 */
 	public void erstesElementAnhaengen(Vokabel vok) {
 		anfang = vok;
@@ -23,7 +23,7 @@ public class ListenVerwaltung {
 	
 	/**
 	 * Fuellt die naechste Stelle der Liste mit den Vokabeln aus der uebergebenen zeile
-	 * @param zeile
+	 * @param vok, die Vokabel die angehaengt wird
 	 */
 	public void neuesElementAnhaengen(Vokabel vok) {
 		ende.setNext(vok);
@@ -49,7 +49,7 @@ public class ListenVerwaltung {
 
 	/**
 	 * Loescht das uebergebene Element vok aus der Liste
-	 * @param vok
+	 * @param vok, die zu loeschende Vokabel
 	 */
 	public void loescheElement(Vokabel vok) {
 		//Erstes Element

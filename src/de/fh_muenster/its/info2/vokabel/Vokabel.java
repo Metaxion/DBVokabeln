@@ -1,5 +1,10 @@
 package de.fh_muenster.its.info2.vokabel;
 
+/**
+ * Ein Element einer doppelt verketteten Liste
+ * @author Marcel Krups
+ *
+ */
 public class Vokabel {
 
 	private String englisch;
@@ -13,6 +18,9 @@ public class Vokabel {
 		prev = null;
 	}
 	
+	/**
+	 * @return boolean, ob das Element einen Nachfolger hat
+	 */
 	public boolean hasNext() {
 		if(next != null) {
 			return true;
@@ -49,8 +57,6 @@ public class Vokabel {
 	public void setPrev(Vokabel prev) {
 		this.prev = prev;
 	}
-	
-	
 	
 	
 }

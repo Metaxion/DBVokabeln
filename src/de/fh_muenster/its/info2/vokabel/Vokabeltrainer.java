@@ -13,6 +13,9 @@ import java.util.Scanner;
 import de.fh_muenster.its.info2.Exception.KeinSemicolonException;
 import de.fh_muenster.its.info2.Exception.LeereVokabelException;
 
+/**
+ * @author Marcel Krups
+ */
 public class Vokabeltrainer {
 
 	protected VokabelManager manager;
@@ -31,7 +34,6 @@ public class Vokabeltrainer {
 	 * - abfragen <br>
 	 * - beenden <br>
 	 * (- debug) <br>
-	 * TODO Tests schreiben
 	 * 
 	 * @param dateiName
 	 */

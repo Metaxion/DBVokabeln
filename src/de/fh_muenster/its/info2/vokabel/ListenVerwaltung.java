@@ -1,8 +1,8 @@
 package de.fh_muenster.its.info2.vokabel;
 
 /**
- * Eine Klasse
- * @author marce
+ * Stellt die Verwaltung fuer eine doppelteverkettete Liste dar
+ * @author Marcel Krups
  *
  */
 public class ListenVerwaltung {

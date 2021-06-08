@@ -6,5 +6,4 @@ public class Main {
 		Vokabeltrainer trainer = new Vokabeltrainer();
 		trainer.start("vokabeln.txt");
 	}
-
 }
